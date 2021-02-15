@@ -1,0 +1,11 @@
+.content {
+    background-color: dimgray;
+}
+.dialogs {
+    display: grid;
+    grid-template-columns: 3fr 8fr;
+}
+.dialog a{
+text-decoration: none;
+    color: black;
+}
