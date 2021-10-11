@@ -1,7 +1,7 @@
 import React, {Suspense} from 'react';
 import './App.css';
 import Navbar from "./components/Navbar/Navbar";
-import  {Route} from "react-router-dom";
+import {Route} from "react-router-dom";
 import News from "./components/News/News";
 import Settings from "./components/Settings/Settings";
 import Music from "./components/Music/Music";
@@ -12,6 +12,9 @@ import {compose} from "redux";
 import withRouter from "react-router-dom/es/withRouter";
 import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./components/common/Preloader/preloader";
+import Redirect from "react-router-dom/es/Redirect";
+import Switch from "react-router-dom/es/Switch";
+
 const DialogsContainer = React.lazy(() => import('./components/dialogs/DialogsContainer'));
 const UsersContainer = React.lazy(() => import('./components/Users/UsersContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -23,17 +26,21 @@ class App extends React.Component {
     }
 
     render() {
-if(!this.props.initialized) {
-    return <Preloader/>
-}
+        if (!this.props.initialized) {
+            return <Preloader/>
+        }
 
         return (
 
             <div className='app-wrapper'>
-                    <HeaderContainer/>
-                    <Navbar/>
-                    <div className='app-wrapper-content'>
+                <HeaderContainer/>
+                <Navbar/>
+                <div className='app-wrapper-content'>
+                    <Switch>
                         <Suspense fallback={<Preloader/>}>
+                            <Redirect from="/" to="/profile" />
+                            {/*<Route exact path='/'*/}
+                            {/*       render={() => <Redirect to={"/profile"}/>}/>*/}
                             <Route path='/Profile/:userId?'
                                    render={() => <ProfileContainer/>}/>
                             <Route path='/Dialogs' render={() => <DialogsContainer/>}/>
@@ -44,12 +51,15 @@ if(!this.props.initialized) {
                                    render={() => <UsersContainer/>}/>
                             <Route path='/Login'
                                    render={() => <LoginPage/>}/>
+                            <Route path='*'
+                                   render={() => <div>ERROR 404</div>}/>
                         </Suspense>
-
+                    </Switch>
                 </div>
             </div>
 
         );
+
     }
 }
 

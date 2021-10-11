@@ -12,7 +12,6 @@ let Paginator = ({totalUsersCount, pageSize, currentPage, onPageChanged, portion
     }
 
     let portionCount = Math.ceil(pagesCount / portionSize)
-    let [portionNumber, setPortionNumber] = useState(1)
     let rightBorderControl = portionNumber * portionSize
     let leftBorderControl = (portionNumber - 1) * portionSize + 1
 
